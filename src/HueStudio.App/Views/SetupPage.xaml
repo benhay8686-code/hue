@@ -3,7 +3,7 @@
     x:Class="HueStudio.App.Views.SetupPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:disc="using:HueStudio.Core.Discovery">
+    xmlns:views="using:HueStudio.App.Views">
 
     <ScrollViewer>
         <StackPanel MaxWidth="640" Padding="{StaticResource PagePadding}" Spacing="20" HorizontalAlignment="Center">
@@ -21,7 +21,7 @@
                     <ProgressBar x:Name="Searching" IsIndeterminate="True" Visibility="Collapsed" />
                     <ListView x:Name="BridgeList" ItemsSource="{x:Bind Bridges}" SelectionMode="Single" SelectionChanged="BridgeList_SelectionChanged">
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="disc:DiscoveredBridge">
+                            <DataTemplate x:DataType="views:BridgeItem">
                                 <StackPanel Padding="0,8">
                                     <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" />
                                     <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}">

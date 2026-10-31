@@ -10,8 +10,8 @@ jobs:
   core-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
       - run: dotnet test tests/HueStudio.Core.Tests
@@ -20,13 +20,13 @@ jobs:
     runs-on: windows-latest
     needs: core-tests
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
       - name: Publish Hue Studio (x64, self-contained)
         run: dotnet publish src/HueStudio.App -c Release -p:Platform=x64 -o publish/HueStudio-win-x64
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: HueStudio-win-x64
           path: publish/HueStudio-win-x64
