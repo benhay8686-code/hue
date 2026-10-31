@@ -10,7 +10,7 @@ namespace HueStudio.App.Views;
 /// <summary>First run: find the bridge (mDNS + cloud discovery or typed IP), then pair with the link button.</summary>
 public sealed partial class SetupPage : Page
 {
-    public ObservableCollection<DiscoveredBridge> Bridges { get; } = [];
+    public ObservableCollection<BridgeItem> Bridges { get; } = [];
     private DiscoveredBridge? _selected;
 
     public SetupPage() => InitializeComponent();
@@ -26,7 +26,7 @@ public sealed partial class SetupPage : Page
         try
         {
             foreach (var b in await new BridgeDiscovery().DiscoverAsync())
-                Bridges.Add(b with { Name = b.Name ?? "Hue Bridge" });
+                Bridges.Add(new BridgeItem(b));
         }
         finally
         {
@@ -41,7 +41,7 @@ public sealed partial class SetupPage : Page
 
     private void BridgeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        _selected = BridgeList.SelectedItem as DiscoveredBridge;
+        _selected = (BridgeList.SelectedItem as BridgeItem)?.Bridge;
         PairButton.IsEnabled = _selected is not null;
     }
 
@@ -57,7 +57,7 @@ public sealed partial class SetupPage : Page
             return;
         }
         PairStatus.Text = "";
-        Bridges.Add(bridge with { Name = bridge.Name ?? "Hue Bridge" });
+        Bridges.Add(new BridgeItem(bridge));
         BridgeList.SelectedItem = Bridges[^1];
     }
 
@@ -102,4 +102,16 @@ public sealed partial class SetupPage : Page
         await App.Home.ConnectDemoAsync();
         App.Window.Navigate("home");
     }
+}
+
+/// <summary>
+/// List row for a found bridge. XAML's generated type info needs settable properties, so we wrap
+/// the core's immutable record rather than binding to it directly.
+/// </summary>
+public sealed class BridgeItem(DiscoveredBridge bridge)
+{
+    public DiscoveredBridge Bridge { get; } = bridge;
+    public string Name => Bridge.Name ?? "Hue Bridge";
+    public string Address => Bridge.Address;
+    public string Id => Bridge.Id;
 }

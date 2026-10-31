@@ -17,6 +17,8 @@
     <WindowsPackageType>None</WindowsPackageType>
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>
+    <!-- Required even when unpackaged: generates HueStudio.pri, without which XAML can't load (crash on launch). -->
+    <EnableMsixTooling>true</EnableMsixTooling>
     <ApplicationIcon Condition="Exists('Assets\HueStudio.ico')">Assets\HueStudio.ico</ApplicationIcon>
   </PropertyGroup>
 
