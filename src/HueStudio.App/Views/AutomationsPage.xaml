@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="HueStudio.App.Views.AutomationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StackPanel Padding="{StaticResource PagePadding}" Spacing="16">
+        <TextBlock Text="Automations" Style="{StaticResource PageTitle}" />
+        <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                   Text="Wake up, Go to sleep, timers, sunrise/sunset and 'when I log on to my PC' routines. Coming in milestone 4." />
+        <InfoBar IsOpen="True" IsClosable="False" Severity="Informational" Title="Planned"
+                 Message="Bridge automations (behavior_instance) so they run even when the PC is off, plus PC-only triggers like lock/unlock, focus mode and game launch." />
+    </StackPanel>
+</Page>

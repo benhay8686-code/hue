@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="HueStudio.App.Views.RoomPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:HueStudio.App.ViewModels"
+    xmlns:local="using:HueStudio.App.Views">
+
+    <ScrollViewer>
+        <StackPanel Padding="{StaticResource PagePadding}" Spacing="24">
+
+            <!-- Header: big live-colour banner with master controls -->
+            <Grid Height="180" CornerRadius="{StaticResource CardRadius}">
+                <Border Background="{x:Bind Group.Gradient, Mode=OneWay}" />
+                <Border Background="#40000000" />
+                <Grid Padding="24" RowSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Top">
+                        <FontIcon Glyph="{x:Bind Group.Glyph, Mode=OneWay}" FontSize="32" Foreground="White" />
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Group.Name, Mode=OneWay}" Foreground="White" Style="{StaticResource TitleLargeTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind Group.Summary, Mode=OneWay}" Foreground="#DDFFFFFF" />
+                        </StackPanel>
+                    </StackPanel>
+                    <ToggleSwitch IsOn="{x:Bind Group.IsOn, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Top" OnContent="" OffContent="" MinWidth="0" />
+                    <Grid Grid.Row="1" ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE706;" Foreground="White" />
+                        <Slider Grid.Column="1" Minimum="0" Maximum="100" StepFrequency="1" Value="{x:Bind Group.Brightness, Mode=TwoWay}" />
+                        <Button Grid.Column="2" Content="Save as scene" Click="SaveScene_Click" />
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!-- Scenes -->
+            <TextBlock Text="Scenes" Style="{StaticResource SubtitleTextBlockStyle}" />
+            <GridView ItemsSource="{x:Bind Group.Scenes}" SelectionMode="None" IsItemClickEnabled="True" ItemClick="Scene_Click">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SceneViewModel">
+                        <Grid Width="180" Height="110" CornerRadius="{StaticResource CardRadius}">
+                            <Border Background="{x:Bind Preview, Mode=OneWay}" />
+                            <Border Background="#30000000" />
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}" Foreground="White" FontWeight="SemiBold"
+                                       VerticalAlignment="Bottom" Margin="12" TextWrapping="Wrap" />
+                            <FontIcon Glyph="&#xE73E;" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10"
+                                      Visibility="{x:Bind IsActive, Mode=OneWay}" />
+                            <Grid.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Play" Command="{x:Bind RecallCommand}" />
+                                    <MenuFlyoutItem Text="Play dynamically" Command="{x:Bind RecallDynamicCommand}" />
+                                </MenuFlyout>
+                            </Grid.ContextFlyout>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+            <!-- Lights -->
+            <TextBlock Text="Lights" Style="{StaticResource SubtitleTextBlockStyle}" />
+            <ItemsRepeater ItemsSource="{x:Bind Group.Lights}">
+                <ItemsRepeater.Layout>
+                    <StackLayout Spacing="8" />
+                </ItemsRepeater.Layout>
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate x:DataType="vm:LightViewModel">
+                        <local:LightRow Light="{x:Bind}" />
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

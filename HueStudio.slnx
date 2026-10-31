@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HueStudio.App/HueStudio.App.csproj">
+      <Platform Project="x64" />
+    </Project>
+    <Project Path="src/HueStudio.Core/HueStudio.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HueStudio.Core.Tests/HueStudio.Core.Tests.csproj" />
+  </Folder>
+</Solution>

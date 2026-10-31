@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="HueStudio.App.Views.SetupPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:disc="using:HueStudio.Core.Discovery">
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="640" Padding="{StaticResource PagePadding}" Spacing="20" HorizontalAlignment="Center">
+            <FontIcon Glyph="&#xEA80;" FontSize="56" Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" HorizontalAlignment="Left" />
+            <TextBlock Text="Connect your Hue Bridge" Style="{StaticResource PageTitle}" />
+            <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                       Text="Hue Studio talks directly to your bridge over your home network. Nothing goes through the cloud, so it's fast and works even if your internet is down." />
+
+            <Border Style="{StaticResource CardBorder}">
+                <StackPanel Spacing="12">
+                    <Grid>
+                        <TextBlock Text="1. Find your bridge" Style="{StaticResource BodyStrongTextBlockStyle}" VerticalAlignment="Center" />
+                        <Button x:Name="SearchButton" Content="Search again" HorizontalAlignment="Right" Click="Search_Click" />
+                    </Grid>
+                    <ProgressBar x:Name="Searching" IsIndeterminate="True" Visibility="Collapsed" />
+                    <ListView x:Name="BridgeList" ItemsSource="{x:Bind Bridges}" SelectionMode="Single" SelectionChanged="BridgeList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="disc:DiscoveredBridge">
+                                <StackPanel Padding="0,8">
+                                    <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" />
+                                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}">
+                                        <Run Text="{x:Bind Address}" /> · <Run Text="{x:Bind Id}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock x:Name="NoneFound" Visibility="Collapsed" TextWrapping="Wrap"
+                               Text="No bridge found automatically. Type its IP address below (you'll find it in the Hue app under Settings › My Hue System › Bridge)." />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBox x:Name="ManualIp" PlaceholderText="e.g. 192.168.1.20" Width="220" />
+                        <Button Content="Use this address" Click="Manual_Click" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}">
+                <StackPanel Spacing="12">
+                    <TextBlock Text="2. Press the link button" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    <TextBlock TextWrapping="Wrap" Text="Click Pair, then press the big round button on top of your Hue Bridge within 30 seconds." />
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Button x:Name="PairButton" Content="Pair" Style="{StaticResource AccentButtonStyle}" IsEnabled="False" Click="Pair_Click" />
+                        <ProgressRing x:Name="PairRing" IsActive="False" Width="20" Height="20" />
+                        <TextBlock x:Name="PairStatus" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <HyperlinkButton Content="No bridge handy? Explore a demo house" Click="Demo_Click" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

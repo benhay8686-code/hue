@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="HueStudio.App.Views.LightRow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Border Style="{StaticResource CardBorder}" Padding="12,10">
+        <Grid ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Colour swatch: click to open the colour studio -->
+            <Button Padding="0" Width="44" Height="44" CornerRadius="22" BorderThickness="0"
+                    ToolTipService.ToolTip="Change colour" Background="Transparent">
+                <Ellipse Width="40" Height="40" Fill="{x:Bind Light.Swatch, Mode=OneWay}"
+                         Stroke="{ThemeResource ControlStrokeColorDefaultBrush}" StrokeThickness="1" />
+                <Button.Flyout>
+                    <Flyout Placement="RightEdgeAlignedTop">
+                        <StackPanel Width="320" Spacing="16">
+                            <TextBlock Text="{x:Bind Light.Name, Mode=OneWay}" Style="{StaticResource SubtitleTextBlockStyle}" />
+
+                            <StackPanel Spacing="8" Visibility="{x:Bind Light.SupportsColor, Mode=OneWay}">
+                                <TextBlock Text="Colour" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <ColorPicker ColorSpectrumShape="Ring"
+                                             IsAlphaEnabled="False"
+                                             IsMoreButtonVisible="False"
+                                             IsColorSliderVisible="False"
+                                             IsColorChannelTextInputVisible="False"
+                                             IsHexInputVisible="True"
+                                             ColorChanged="{x:Bind Light.OnColorPicked}" />
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Tag="#FF5A1F" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#FF5A1F" />
+                                    <Button Tag="#FFB347" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#FFB347" />
+                                    <Button Tag="#E0218A" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#E0218A" />
+                                    <Button Tag="#7B2FF7" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#7B2FF7" />
+                                    <Button Tag="#1F6FFF" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#1F6FFF" />
+                                    <Button Tag="#00C2A8" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#00C2A8" />
+                                    <Button Tag="#3DDC4A" Click="Preset_Click" Width="32" Height="32" CornerRadius="16" Background="#3DDC4A" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Spacing="4" Visibility="{x:Bind Light.SupportsTemperature, Mode=OneWay}">
+                                <TextBlock Text="White temperature" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                <Slider Minimum="2000" Maximum="6500" StepFrequency="50"
+                                        Value="{x:Bind Light.Kelvin, Mode=TwoWay}" />
+                                <Grid>
+                                    <TextBlock Text="Warm 2000K" Style="{StaticResource CaptionTextBlockStyle}" />
+                                    <TextBlock Text="Cool 6500K" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Right" />
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{x:Bind Light.Name, Mode=OneWay}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{x:Bind Light.Model, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+
+            <Slider Grid.Column="2" Minimum="0" Maximum="100" StepFrequency="1" VerticalAlignment="Center"
+                    Value="{x:Bind Light.Brightness, Mode=TwoWay}" />
+
+            <ToggleSwitch Grid.Column="3" IsOn="{x:Bind Light.IsOn, Mode=TwoWay}" OnContent="" OffContent="" MinWidth="0" />
+
+            <Button Grid.Column="4" Background="Transparent" BorderThickness="0" ToolTipService.ToolTip="More">
+                <FontIcon Glyph="&#xE712;" FontSize="14" />
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Identify (blink)" Command="{x:Bind Light.IdentifyCommand}">
+                            <MenuFlyoutItem.Icon><FontIcon Glyph="&#xEA80;" /></MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
